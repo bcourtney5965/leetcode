@@ -68,7 +68,6 @@ function rotate(nums, k) {
         // reverse from 0 to k-1
         nums = reverseArray(nums, 0, k - 1);
     }
-    console.log('scalloped potatoes::: nums', nums);
 }
 // console.log(
 //   'scalloped potatoes::: rotate, should be: [5,6,7,1,2,3,4].... actual: ',
