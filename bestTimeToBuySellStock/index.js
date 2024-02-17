@@ -1,15 +1,15 @@
 function maxProfit(prices) {
-  var max = 0;
-  if (prices.length < 2) return max;
-  // for each item
-  for (var i = 0; i < prices.length; i++) {
-    var innerMax = 0;
-    // loop over items appearing after the 1st item
-    for (var j = i + 1; j < prices.length; j++) {
-      innerMax = Math.max(innerMax, prices[j] - prices[i]);
-    }
-    max = Math.max(max, innerMax);
+  // using Kadane’s Algorithm as inspiration
+  if (prices.length < 2) return 0;
+  var localMax = 0;
+  var absoluteMax = Number.NEGATIVE_INFINITY;
+  var absoluteMin = Number.POSITIVE_INFINITY;
+  for (var i = 1; i < prices.length; i++) {
+    absoluteMin = Math.min(absoluteMin, prices[i - 1]);
+    localMax = Math.max(0, prices[i] - absoluteMin);
+    absoluteMax = Math.max(absoluteMax, localMax);
   }
-  return max;
+  return absoluteMax;
 }
-console.log('maxProfit([7,1,5,3,6,4])', maxProfit([7, 1, 5, 3, 6, 4]));
+console.log('maxProfit([7,1,5,3,6,4])', maxProfit([7, 1, 5, 3, 6, 4])); // 5
+console.log('maxProfit([7,6,4,3,1])', maxProfit([7, 6, 4, 3, 1])); // 0
