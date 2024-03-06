@@ -19,34 +19,25 @@ const locateBiggest = (arr: number[]): MyObject => {
   );
 };
 
-function canJump(nums: number[]): boolean {
-  const canReachEnd = [];
+// Recursively determine if end can be reached from current position
+function canJump(nums: number[]): boolean | number[] {
+  // Base Case: array length = 1 or current element can reach the end
+  if (nums.length === 1 || nums[0] >= nums.length - 1) {
+    return true;
+  }
 
-  // Recursively determine if end can be reached from current position
-  (function checkReachability(subArray: number[]) {
-    // Base Case: array length = 1 or current element can reach the end
-    if (subArray.length === 1 || subArray[0] >= subArray.length - 1) {
-      canReachEnd.push(true);
-      return;
-    }
+  // Determine the max number jumps possible
+  const maxJumps: number = Math.min(nums[0], nums.length - 1);
 
-    // Determine the max number jumps possible
-    const maxJumps: number = Math.min(subArray[0], subArray.length - 1);
+  // Get best element
+  const { i: bestIndex } = locateBiggest(nums.slice(0, maxJumps));
 
-    // Get best element
-    const { i: bestIndex } = locateBiggest(subArray.slice(0, maxJumps));
-
-    // prevent endless loop
-    if (bestIndex === 0) {
-      canReachEnd.push(false);
-      return;
-    }
-    // Greedily get next subarray & recursivily run func
-    checkReachability(subArray.slice(bestIndex));
-  })(nums);
-
-  // Return true if at least one subarray can reach the end, otherwise return false
-  return canReachEnd.reduce((result, reachable) => result || reachable, false);
+  // prevent endless loop
+  if (bestIndex === 0) {
+    return false;
+  }
+  // Greedily get next subarray & recursivily run func
+  return canJump(nums.slice(bestIndex));
 }
 
 console.log('canJump([2,8,1,1,4])', canJump([2, 8, 1, 1, 4])); // true
