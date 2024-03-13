@@ -1,38 +1,21 @@
-var findMostAdvantageousJump = function (array) {
-    // Determines the most advantageous jump.
-    // Defaults to the smallest index.
-    return array.reduce(function (acc, element, index) {
-        if (element + index + 1 > acc.index + acc.element) {
-            return {
-                index: index + 1,
-                element: element,
-            };
-        }
-        return acc;
-    }, { index: 1, element: array[0] });
-};
-// Recursively determine if end can be reached from the current position
 function canJump(nums) {
-    // Base Case: array length = 1 or the current element can reach the end
-    if (nums.length === 1 || nums[0] >= nums.length - 1) {
-        return true;
+    var index = 0;
+    var total = 0;
+    var length = nums.length - 1;
+    while (index <= length) {
+        total = Math.max(total, index + nums[index]);
+        if (total >= length) {
+            return true;
+        }
+        if (nums[index] === 0 && total <= index) {
+            return false;
+        }
+        index++;
     }
-    // Prevent endless loop
-    if (nums[0] === 0) {
-        return false;
-    }
-    // Determine the maximum number of jumps possible
-    var maxJumps = nums[0];
-    // Get the best element for the next jump
-    var inputArray = nums.slice(1, maxJumps + 1);
-    var bestIndex = findMostAdvantageousJump(inputArray).index;
-    // Greedily get the next subarray
-    var subArray = nums.slice(Math.max(bestIndex, 1));
-    // Recursively run the function
-    return canJump(subArray);
+    return false;
 }
 console.log('canJump([2,8,1,1,4])', canJump([2, 8, 1, 1, 4])); // true
-console.log('canJump([4,4])', canJump([2, 3, 1, 1, 4])); // true
+console.log('canJump([4,4])', canJump([4, 4])); // true
 console.log('canJump([3,2,1,0,4])', canJump([3, 2, 1, 0, 4])); // false
 console.log('canJump([2,0,0])', canJump([2, 0, 0])); // true
 console.log('canJump([2,5,0,0])', canJump([2, 5, 0, 0])); // true

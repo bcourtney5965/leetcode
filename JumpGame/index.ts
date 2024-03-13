@@ -1,53 +1,24 @@
-interface JumpResult {
-  index: number;
-  element: number;
-}
+function canJump(nums: number[]): boolean {
+  let index = 0;
+  let total = 0;
+  const length = nums.length - 1;
 
-const findMostAdvantageousJump = (array: number[]): JumpResult => {
-  // Determines the most advantageous jump.
-  // Defaults to the smallest index.
-  return array.reduce(
-    (acc, element, index) => {
-      if (element + index + 1 > acc.index + acc.element) {
-        return {
-          index: index + 1,
-          element,
-        };
-      }
-      return acc;
-    },
-    { index: 1, element: array[0] },
-  );
-};
-
-// Recursively determine if end can be reached from the current position
-function canJump(nums: number[]): boolean | number[] {
-  // Base Case: array length = 1 or the current element can reach the end
-  if (nums.length === 1 || nums[0] >= nums.length - 1) {
-    return true;
+  while (index <= length) {
+    total = Math.max(total, index + nums[index]);
+    if (total >= length) {
+      return true;
+    }
+    if (nums[index] === 0 && total <= index) {
+      return false;
+    }
+    index++;
   }
 
-  // Prevent endless loop
-  if (nums[0] === 0) {
-    return false;
-  }
-
-  // Determine the maximum number of jumps possible
-  const maxJumps: number = nums[0];
-
-  // Get the best element for the next jump
-  const inputArray: number[] = nums.slice(1, maxJumps + 1);
-  let { index: bestIndex } = findMostAdvantageousJump(inputArray);
-
-  // Greedily get the next subarray
-  const subArray = nums.slice(Math.max(bestIndex, 1));
-
-  // Recursively run the function
-  return canJump(subArray);
+  return false;
 }
 
 console.log('canJump([2,8,1,1,4])', canJump([2, 8, 1, 1, 4])); // true
-console.log('canJump([4,4])', canJump([2, 3, 1, 1, 4])); // true
+console.log('canJump([4,4])', canJump([4, 4])); // true
 console.log('canJump([3,2,1,0,4])', canJump([3, 2, 1, 0, 4])); // false
 console.log('canJump([2,0,0])', canJump([2, 0, 0])); // true
 console.log('canJump([2,5,0,0])', canJump([2, 5, 0, 0])); // true
