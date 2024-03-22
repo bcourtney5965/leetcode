@@ -8,20 +8,13 @@ class ListNode {
 }
 
 function reverseList(head: ListNode | null): ListNode | null {
-  // set temp variable to ListNode | null
+  let previous: ListNode | null = null;
   let temp: ListNode | null = null;
-  let next: ListNode | null = null;
-  let current: ListNode | null = head;
-  // create a loop // while temp is NOT NULL
-  while (current !== null) {
-    //    set temp to current.next
-    temp = current.next;
-    //    point current.next to next
-    current.next = next;
-    //    set next to current
-    next = current;
-    //    set current to temp
-    current = temp;
+  while (head !== null) {
+    temp = head.next;
+    head.next = previous;
+    previous = head;
+    head = temp;
   }
-  return next;
+  return previous;
 }
